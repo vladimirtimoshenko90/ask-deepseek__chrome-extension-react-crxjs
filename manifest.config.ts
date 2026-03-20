@@ -13,7 +13,7 @@ export default defineManifest({
 			48: 'public/logo.png',
 		},
 	},
-	permissions: ['storage', 'unlimitedStorage'],
+	permissions: ['storage', 'unlimitedStorage', 'contextMenus'],
 	background: {
 		service_worker: 'src/background/sw.ts',
 		type: 'module',
