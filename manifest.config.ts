@@ -17,14 +17,10 @@ export default defineManifest({
 		service_worker: 'src/background/sw.ts',
 		type: 'module',
 	},
-	permissions: ['sidePanel', 'contentSettings'],
 	content_scripts: [
 		{
 			js: ['src/content/main.tsx'],
 			matches: ['https://*/*'],
 		},
 	],
-	side_panel: {
-		default_path: 'src/sidepanel/index.html',
-	},
 });
