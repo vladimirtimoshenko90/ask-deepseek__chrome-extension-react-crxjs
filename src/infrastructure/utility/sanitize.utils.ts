@@ -1,3 +1,4 @@
+import { CHAT_MESSAGE_INJECTION_SELECTOR } from '@/infrastructure/constants';
 import DOMPurify from 'dompurify';
 
 const ALLOWED_TAGS = [
@@ -37,7 +38,7 @@ export function sanitizeChatMessageHtml(html: string): string {
 	const template = document.createElement('template');
 	template.innerHTML = html;
 	template.content
-		.querySelectorAll('[data-chat-message]')
+		.querySelectorAll(CHAT_MESSAGE_INJECTION_SELECTOR)
 		.forEach((el) => el.remove());
 
 	return DOMPurify.sanitize(template.innerHTML, {
