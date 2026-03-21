@@ -1,4 +1,4 @@
-import ChatMessage from './ChatMessage';
+import ChatMessage from './ChatMessage/ChatMessage';
 import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/messages.ts';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -34,7 +34,7 @@ function injectChatMessage(el_msg: Element) {
 
 	const el_injectInto = document.createElement('div');
 	el_injectInto.setAttribute('data-chat-message', 'true');
-	el_msg.appendChild(el_injectInto);
+	el_msg.firstElementChild!.prepend(el_injectInto);
 
 	createRoot(el_injectInto).render(
 		<StrictMode>
