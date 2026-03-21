@@ -1,0 +1,1 @@
+export const MSG_TYPE_ASK_DEEPSEEK = 'ASK_DEEPSEEK';
