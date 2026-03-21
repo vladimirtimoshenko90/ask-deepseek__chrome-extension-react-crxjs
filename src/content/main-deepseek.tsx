@@ -1,4 +1,4 @@
-import ChatMessage from './ChatMessage/ChatMessage';
+import App from './App';
 import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/messages.ts';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
@@ -29,40 +29,13 @@ chrome.runtime.onMessage.addListener((message) => {
 
 // --- Chat messages injection ---
 
-function injectChatMessage(el_msg: Element) {
-	if (el_msg.querySelector('[data-chat-message]')) return;
+(() => {
+	const el_root = document.createElement('div');
+	document.body.append(el_root);
 
-	const el_injectInto = document.createElement('div');
-	el_injectInto.setAttribute('data-chat-message', 'true');
-	el_msg.firstElementChild!.prepend(el_injectInto);
-
-	createRoot(el_injectInto).render(
+	createRoot(el_root).render(
 		<StrictMode>
-			<ChatMessage />
+			<App />
 		</StrictMode>,
 	);
-}
-
-function observeVirtualList() {
-	const list = document.querySelector('div.ds-virtual-list-items');
-	if (!list) {
-		setTimeout(observeVirtualList, 300);
-		return;
-	}
-
-	list.querySelectorAll('div.ds-message').forEach(injectChatMessage);
-
-	new MutationObserver((mutations) => {
-		for (const mutation of mutations) {
-			for (const node of mutation.addedNodes) {
-				if (!(node instanceof Element)) continue;
-				if (node.matches('div.ds-message')) injectChatMessage(node);
-				node.querySelectorAll('div.ds-message').forEach(
-					injectChatMessage,
-				);
-			}
-		}
-	}).observe(list, { childList: true, subtree: true });
-}
-
-observeVirtualList();
+})();
