@@ -2,8 +2,7 @@ import App from './App.tsx';
 import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/messages.ts';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-
-const prompt = `Проанализируй следующий текст и объясни его значение максимально кратко и по существу.\n\nИспользуй профессиональный, но доступный стиль.\n\nОтвет обязательно дай на том же языке, что и сам текст.\n\nВот текст: '{text}'`;
+import { prompt_ask_deepseek } from '@/infrastructure/prompts.ts';
 
 chrome.runtime.onMessage.addListener((message) => {
 	if (message.type === MSG_TYPE_ASK_DEEPSEEK) {
@@ -15,7 +14,10 @@ chrome.runtime.onMessage.addListener((message) => {
 			HTMLTextAreaElement.prototype,
 			'value',
 		)?.set;
-		nativeSetter?.call(textarea, prompt.replace('{text}', message.text));
+		nativeSetter?.call(
+			textarea,
+			prompt_ask_deepseek.replace('{text}', message.text),
+		);
 		textarea.dispatchEvent(new Event('input', { bubbles: true }));
 		textarea.dispatchEvent(
 			new KeyboardEvent('keydown', { key: 'Enter', bubbles: true }),
