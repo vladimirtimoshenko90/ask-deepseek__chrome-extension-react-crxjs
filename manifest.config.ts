@@ -20,8 +20,8 @@ export default defineManifest({
 	},
 	content_scripts: [
 		{
-			js: ['src/content/main.tsx'],
-			matches: ['https://*/*'],
+			js: ['src/content/main-deepseek.tsx'],
+			matches: ['https://chat.deepseek.com/*'],
 		},
 	],
 });
