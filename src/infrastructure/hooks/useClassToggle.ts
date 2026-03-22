@@ -1,11 +1,15 @@
 import { useEffect } from 'react';
 
 export function useClassToggle(
-	el: Element | null | undefined,
+	target: Element | string | null | undefined,
 	className: string,
 	active: boolean,
 ): void {
 	useEffect(() => {
+		const el =
+			typeof target === 'string'
+				? document.querySelector(target)
+				: target;
 		el?.classList.toggle(className, active);
-	}, [el, className, active]);
+	}, [target, className, active]);
 }
