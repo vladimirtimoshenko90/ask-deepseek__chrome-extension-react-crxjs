@@ -1,27 +1,34 @@
-import { IconMinimize, IconPin } from '@tabler/icons-react';
-import { useEffect, useMemo, useRef } from 'react';
+import { IconMinimize, IconPin, IconPinFilled } from '@tabler/icons-react';
+import { useEffect, useRef, useState } from 'react';
 
+import { type ChatInfo, storage } from '@/infrastructure/storage';
 import { hashText } from '@/infrastructure/utility/hash.utils';
 import { sanitizeChatMessageHtml } from '@/infrastructure/utility/sanitize.utils';
-import { storage } from '@/infrastructure/storage';
 import styles from './ChatMessage.module.scss';
 
-function ChatMessage() {
+interface Props {
+	chatPath: string;
+	chatInfo: ChatInfo;
+}
+
+function ChatMessage({ chatPath, chatInfo }: Props) {
 	const el_root = useRef<HTMLDivElement>(null);
 	const el_msg = useRef<HTMLElement>(null!);
 
-	const chatPath = useMemo(() => window.location.pathname, []);
+	const [hash, setHash] = useState<string>('');
 
 	useEffect(() => {
 		el_msg.current =
 			el_root.current!.closest<HTMLElement>('div.ds-message')!;
+		hashText(el_msg.current.innerText).then(setHash);
 	}, []);
 
 	const handlePin = async () => {
-		const hash = await hashText(el_msg.current.innerText);
 		const html = sanitizeChatMessageHtml(el_msg.current.innerHTML);
 		await storage.addPin(chatPath, { hash, html });
 	};
+
+	const isPinned = chatInfo.pins.some((p) => p.hash === hash);
 
 	return (
 		<div ref={el_root} className={styles['ads-chat-message-toolbar']}>
@@ -29,7 +36,7 @@ function ChatMessage() {
 				<IconMinimize size={20} />
 			</button>
 			<button onClick={handlePin}>
-				<IconPin size={20} />
+				{isPinned ? <IconPinFilled size={20} /> : <IconPin size={20} />}
 			</button>
 		</div>
 	);

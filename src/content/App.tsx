@@ -2,13 +2,27 @@ import {
 	CHAT_MESSAGE_INJECTION_SELECTOR,
 	markChatMessageInjectionRoot,
 } from '@/infrastructure/constants';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import ChatMessage from './ChatMessage/ChatMessage';
+import {
+	type ChatInfo,
+	EMPTY_CHAT_INFO,
+	storage,
+} from '@/infrastructure/storage';
 import { createPortal } from 'react-dom';
 
 function App() {
+	const chatPath = useMemo(() => window.location.pathname, []);
+	const [chatInfo, setChatInfo] = useState<ChatInfo>(EMPTY_CHAT_INFO);
+
 	const [containers, setContainers] = useState<HTMLElement[]>([]);
+
+	useEffect(() => {
+		storage
+			.getChatInfo(chatPath)
+			.then((info) => setChatInfo(info || EMPTY_CHAT_INFO));
+	}, [chatPath]);
 
 	useEffect(() => {
 		const syncContainers = () => {
@@ -46,7 +60,11 @@ function App() {
 	}, []);
 
 	return containers.map((container, idx) =>
-		createPortal(<ChatMessage />, container, idx),
+		createPortal(
+			<ChatMessage chatPath={chatPath} chatInfo={chatInfo} />,
+			container,
+			idx,
+		),
 	);
 }
 
