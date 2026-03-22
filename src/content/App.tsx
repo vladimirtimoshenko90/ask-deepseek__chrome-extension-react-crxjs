@@ -49,6 +49,28 @@ function App() {
 		[chatPath],
 	);
 
+	const handleCollapse = useCallback(
+		async (hash: string) => {
+			await storage.addCollapsed(chatPath, hash);
+			setChatInfo((prev) => ({
+				...prev,
+				collapsed: [...prev.collapsed, hash],
+			}));
+		},
+		[chatPath],
+	);
+
+	const handleUncollapse = useCallback(
+		async (hash: string) => {
+			await storage.removeCollapsed(chatPath, hash);
+			setChatInfo((prev) => ({
+				...prev,
+				collapsed: prev.collapsed.filter((h) => h !== hash),
+			}));
+		},
+		[chatPath],
+	);
+
 	useMutationObserver(document.body, () => {
 		const el_list = document.querySelector('div.ds-virtual-list-items');
 		if (!el_list) {
@@ -97,6 +119,8 @@ function App() {
 						chatInfo={chatInfo}
 						onPin={handlePin}
 						onUnpin={handleUnpin}
+						onCollapse={handleCollapse}
+						onUncollapse={handleUncollapse}
 					/>,
 					container,
 					idx,
