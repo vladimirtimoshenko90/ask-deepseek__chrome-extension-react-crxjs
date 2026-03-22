@@ -1,32 +1,30 @@
 import { IconMinimize, IconPin, IconPinFilled } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 
-import { type ChatInfo, storage } from '@/infrastructure/storage';
+import { type ChatInfo, type PinnedMessage } from '@/infrastructure/storage';
 import { hashText } from '@/infrastructure/utility/hash.utils';
 import { sanitizeChatMessageHtml } from '@/infrastructure/utility/sanitize.utils';
 import styles from './ChatMessage.module.scss';
 
 interface Props {
-	chatPath: string;
 	chatInfo: ChatInfo;
+	onPin: (pin: PinnedMessage) => void;
+	onUnpin: (hash: string) => void;
 }
 
-function ChatMessage({ chatPath, chatInfo }: Props) {
+function ChatMessage({ chatInfo, onPin, onUnpin }: Props) {
 	const el_root = useRef<HTMLDivElement>(null);
 	const el_msg = useRef<HTMLElement>(null!);
 
 	const [hash, setHash] = useState<string>('');
+	const [html, setHtml] = useState<string>('');
 
 	useEffect(() => {
 		el_msg.current =
 			el_root.current!.closest<HTMLElement>('div.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
+		setHtml(sanitizeChatMessageHtml(el_msg.current.innerHTML));
 	}, []);
-
-	const handlePin = async () => {
-		const html = sanitizeChatMessageHtml(el_msg.current.innerHTML);
-		await storage.addPin(chatPath, { hash, html });
-	};
 
 	const isPinned = chatInfo.pins.some((p) => p.hash === hash);
 
@@ -35,9 +33,16 @@ function ChatMessage({ chatPath, chatInfo }: Props) {
 			<button>
 				<IconMinimize size={20} />
 			</button>
-			<button onClick={handlePin}>
-				{isPinned ? <IconPinFilled size={20} /> : <IconPin size={20} />}
-			</button>
+
+			{isPinned ? (
+				<button onClick={() => onUnpin(hash)}>
+					<IconPinFilled size={20} />
+				</button>
+			) : (
+				<button onClick={() => onPin({ hash, html })}>
+					<IconPin size={20} />
+				</button>
+			)}
 		</div>
 	);
 }

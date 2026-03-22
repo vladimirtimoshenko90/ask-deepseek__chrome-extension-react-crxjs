@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import ChatMessage from './ChatMessage/ChatMessage';
 import {
 	type ChatInfo,
+	type PinnedMessage,
 	EMPTY_CHAT_INFO,
 	storage,
 } from '@/infrastructure/storage';
@@ -23,6 +24,19 @@ function App() {
 			.getChatInfo(chatPath)
 			.then((info) => setChatInfo(info || EMPTY_CHAT_INFO));
 	}, [chatPath]);
+
+	const handlePin = async (pin: PinnedMessage) => {
+		await storage.addPin(chatPath, pin);
+		setChatInfo((prev) => ({ ...prev, pins: [...prev.pins, pin] }));
+	};
+
+	const handleUnpin = async (hash: string) => {
+		await storage.removePin(chatPath, hash);
+		setChatInfo((prev) => ({
+			...prev,
+			pins: prev.pins.filter((p) => p.hash !== hash),
+		}));
+	};
 
 	useEffect(() => {
 		const syncContainers = () => {
@@ -61,7 +75,11 @@ function App() {
 
 	return containers.map((container, idx) =>
 		createPortal(
-			<ChatMessage chatPath={chatPath} chatInfo={chatInfo} />,
+			<ChatMessage
+				chatInfo={chatInfo}
+				onPin={handlePin}
+				onUnpin={handleUnpin}
+			/>,
 			container,
 			idx,
 		),
