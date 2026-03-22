@@ -15,6 +15,7 @@ import { createPortal } from 'react-dom';
 import PinnedSidebar from './PinnedSidebar/PinnedSidebar';
 import { useMutationObserver } from '@/infrastructure/hooks/useMutationObserver';
 import { usePathname } from '@/infrastructure/hooks/usePathname';
+import FullscreenToggle from './FullscreenToggle/FullscreenToggle';
 
 function App() {
 	const chatPath = usePathname();
@@ -80,6 +81,8 @@ function App() {
 
 	return (
 		<>
+			<FullscreenToggle />
+
 			<PinnedSidebar pins={chatInfo.pins} onUnpin={handleUnpin} />
 
 			{containers.map((container, idx) =>

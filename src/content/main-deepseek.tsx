@@ -1,5 +1,8 @@
+import '@mantine/core/styles.css';
+
 import App from './App';
 import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/messages.ts';
+import { MantineProvider } from '@mantine/core';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { prompt_ask_deepseek } from '@/infrastructure/prompts.ts';
@@ -35,7 +38,9 @@ chrome.runtime.onMessage.addListener((message) => {
 
 	createRoot(el_root).render(
 		<StrictMode>
-			<App />
+			<MantineProvider>
+				<App />
+			</MantineProvider>
 		</StrictMode>,
 	);
 })();
