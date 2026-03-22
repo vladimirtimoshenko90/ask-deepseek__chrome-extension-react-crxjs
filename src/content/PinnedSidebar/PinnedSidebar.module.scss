@@ -1,0 +1,50 @@
+.ads-pinned-sidebar {
+	position: fixed;
+	top: 0;
+	right: 0;
+	width: 440px;
+	height: 100vh;
+	background: #fff;
+	border-left: 1px solid #d0d0d0;
+	box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
+	overflow-y: scroll;
+	overflow-x: hidden;
+	z-index: 9999;
+	padding: 8px;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	color: #000;
+
+	// Custom scrollbar
+	scrollbar-width: thin;
+	scrollbar-color: #bbb transparent;
+
+	&::-webkit-scrollbar {
+		width: 4px;
+	}
+
+	&::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	&::-webkit-scrollbar-thumb {
+		background-color: #bbb;
+		border-radius: 4px;
+	}
+}
+
+.ads-pinned-sidebar__item {
+	flex-shrink: 0;
+	font-size: 16px;
+	line-height: 1.5;
+	color: #000;
+	white-space: pre-wrap;
+
+	& + & {
+		border-top: 2px solid #999;
+		padding-top: 12px;
+		margin-top: 10px;
+	}
+}

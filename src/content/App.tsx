@@ -2,7 +2,7 @@ import {
 	CHAT_MESSAGE_INJECTION_SELECTOR,
 	markChatMessageInjectionRoot,
 } from '@/infrastructure/constants';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import ChatMessageToolbar from './ChatMessageToolbar/ChatMessageToolbar';
 import {
@@ -12,12 +12,14 @@ import {
 	storage,
 } from '@/infrastructure/storage';
 import { createPortal } from 'react-dom';
+import PinnedSidebar from './PinnedSidebar/PinnedSidebar';
 
 function App() {
 	const chatPath = useMemo(() => window.location.pathname, []);
 	const [chatInfo, setChatInfo] = useState<ChatInfo>(EMPTY_CHAT_INFO);
 
 	const [containers, setContainers] = useState<HTMLElement[]>([]);
+	const containersRef = useRef<HTMLElement[]>([]);
 
 	useEffect(() => {
 		storage
@@ -64,7 +66,14 @@ function App() {
 				},
 			);
 
-			setContainers(el_injectInto_list);
+			const prev = containersRef.current;
+			const unchanged =
+				prev.length === el_injectInto_list.length &&
+				el_injectInto_list.every((el, i) => el === prev[i]);
+			if (!unchanged) {
+				containersRef.current = el_injectInto_list;
+				setContainers(el_injectInto_list);
+			}
 		};
 
 		const observer = new MutationObserver(syncContainers);
@@ -73,16 +82,22 @@ function App() {
 		return () => observer.disconnect();
 	}, []);
 
-	return containers.map((container, idx) =>
-		createPortal(
-			<ChatMessageToolbar
-				chatInfo={chatInfo}
-				onPin={handlePin}
-				onUnpin={handleUnpin}
-			/>,
-			container,
-			idx,
-		),
+	return (
+		<>
+			<PinnedSidebar pins={chatInfo.pins} />
+
+			{containers.map((container, idx) =>
+				createPortal(
+					<ChatMessageToolbar
+						chatInfo={chatInfo}
+						onPin={handlePin}
+						onUnpin={handleUnpin}
+					/>,
+					container,
+					idx,
+				),
+			)}
+		</>
 	);
 }
 
