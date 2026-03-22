@@ -1,8 +1,43 @@
+/* Pin feature — highlights the pinned message in the chat */
 .ads-pin-hl {
 	outline: 2px dashed green;
 	background-color: #f0fff0;
 }
 
+/* Collapse feature — visually compresses a message: reduces height, fades content, adds a bottom fade-out mask */
+.ads-collapsed {
+	max-height: 200px;
+	overflow: hidden;
+	opacity: 0.7;
+	mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+	-webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
+
+	* {
+		font-size: 0.7rem;
+		line-height: 1rem;
+	}
+
+	p,
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		margin: 2px 0 !important;
+	}
+
+	.ads-pin-hl {
+		outline: none;
+	}
+}
+
+.ads-collapsed + *,
+.ads-collapsed + .ds-theme + .ds-flex {
+	display: none !important;
+}
+
+/* Full screen mode feature — smoothly expands the chat area to full viewport width when the toggle is on */
 .ds-virtual-list--printable .ds-virtual-list-items {
 	transition: padding 1s ease;
 }

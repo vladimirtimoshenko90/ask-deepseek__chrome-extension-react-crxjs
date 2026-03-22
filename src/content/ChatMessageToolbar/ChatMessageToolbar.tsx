@@ -1,8 +1,8 @@
 import {
-	IconMaximize,
-	IconMinimize,
-	IconPin,
-	IconPinFilled,
+    IconMaximize,
+    IconMinimize,
+    IconPin,
+    IconPinFilled,
 } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 
@@ -44,6 +44,7 @@ function ChatMessageToolbar({
 	const isPinned = chatInfo.pins?.some((p) => p.hash === hash) || false;
 
 	useClassToggle(el_msg.current?.firstElementChild, 'ads-pin-hl', isPinned);
+	useClassToggle(el_msg.current, 'ads-collapsed', isCollapsed);
 
 	return (
 		<div ref={el_root} className={styles['ads-chat-message-toolbar']}>
