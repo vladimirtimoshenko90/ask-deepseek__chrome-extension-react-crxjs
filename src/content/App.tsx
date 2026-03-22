@@ -13,6 +13,7 @@ import {
 } from '@/infrastructure/storage';
 import { createPortal } from 'react-dom';
 import PinnedSidebar from './PinnedSidebar/PinnedSidebar';
+import { useMutationObserver } from '@/infrastructure/hooks/useMutationObserver';
 
 function App() {
 	const chatPath = useMemo(() => window.location.pathname, []);
@@ -40,47 +41,41 @@ function App() {
 		}));
 	};
 
-	useEffect(() => {
-		const syncContainers = () => {
-			const el_list = document.querySelector('div.ds-virtual-list-items');
-			if (!el_list) {
-				setContainers([]);
-				return;
-			}
+	useMutationObserver(document.body, () => {
+		const el_list = document.querySelector('div.ds-virtual-list-items');
+		if (!el_list) {
+			containersRef.current = [];
+			setContainers([]);
+			return;
+		}
 
-			const el_message_list =
-				el_list.querySelectorAll<HTMLElement>('div.ds-message');
-			const el_injectInto_list = Array.from(el_message_list).map(
-				(el_msg) => {
-					let el_injectInto = el_msg.querySelector<HTMLElement>(
-						CHAT_MESSAGE_INJECTION_SELECTOR,
-					);
+		const el_message_list =
+			el_list.querySelectorAll<HTMLElement>('div.ds-message');
 
-					if (!el_injectInto) {
-						el_injectInto = document.createElement('div');
-						markChatMessageInjectionRoot(el_injectInto);
-						el_msg.firstElementChild!.prepend(el_injectInto);
-					}
-
-					return el_injectInto;
-				},
+		const el_injectInto_list = Array.from(el_message_list).map((el_msg) => {
+			let el_injectInto = el_msg.querySelector<HTMLElement>(
+				CHAT_MESSAGE_INJECTION_SELECTOR,
 			);
 
-			const prev = containersRef.current;
-			const unchanged =
-				prev.length === el_injectInto_list.length &&
-				el_injectInto_list.every((el, i) => el === prev[i]);
-			if (!unchanged) {
-				containersRef.current = el_injectInto_list;
-				setContainers(el_injectInto_list);
+			if (!el_injectInto) {
+				el_injectInto = document.createElement('div');
+				markChatMessageInjectionRoot(el_injectInto);
+				el_msg.firstElementChild!.prepend(el_injectInto);
 			}
-		};
 
-		const observer = new MutationObserver(syncContainers);
-		syncContainers();
-		observer.observe(document.body, { childList: true, subtree: true });
-		return () => observer.disconnect();
-	}, []);
+			return el_injectInto;
+		});
+
+		const unchanged =
+			containersRef.current.length === el_injectInto_list.length &&
+			el_injectInto_list.every(
+				(el, i) => el === containersRef.current[i],
+			);
+		if (!unchanged) {
+			containersRef.current = el_injectInto_list;
+			setContainers(el_injectInto_list);
+		}
+	});
 
 	return (
 		<>
