@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { Switch } from '@mantine/core';
 import { storage } from '@/infrastructure/storage';
 import styles from './FullscreenToggle.module.scss';
+import { useClassToggle } from '@/infrastructure/hooks/useClassToggle';
 
 function FullscreenToggle() {
 	const [enabled, setEnabled] = useState(false);
@@ -10,6 +11,8 @@ function FullscreenToggle() {
 	useEffect(() => {
 		storage.getWideMode().then(setEnabled);
 	}, []);
+
+	useClassToggle(document.body, 'ads-fullscreen-mode', enabled);
 
 	const handleChange = async (value: boolean) => {
 		setEnabled(value);

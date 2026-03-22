@@ -2,3 +2,11 @@
 	outline: 2px dashed green;
 	background-color: #f0fff0;
 }
+
+.ds-virtual-list--printable .ds-virtual-list-items {
+	transition: padding 1s ease;
+}
+
+.ads-fullscreen-mode .ds-virtual-list--printable .ds-virtual-list-items {
+	padding: 0 10px !important;
+}
