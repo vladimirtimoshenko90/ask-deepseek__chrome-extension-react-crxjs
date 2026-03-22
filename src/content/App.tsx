@@ -2,7 +2,7 @@ import {
 	CHAT_MESSAGE_INJECTION_SELECTOR,
 	markChatMessageInjectionRoot,
 } from '@/infrastructure/constants';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import ChatMessageToolbar from './ChatMessageToolbar/ChatMessageToolbar';
 import {
@@ -14,9 +14,10 @@ import {
 import { createPortal } from 'react-dom';
 import PinnedSidebar from './PinnedSidebar/PinnedSidebar';
 import { useMutationObserver } from '@/infrastructure/hooks/useMutationObserver';
+import { usePathname } from '@/infrastructure/hooks/usePathname';
 
 function App() {
-	const chatPath = useMemo(() => window.location.pathname, []);
+	const chatPath = usePathname();
 	const [chatInfo, setChatInfo] = useState<ChatInfo>(EMPTY_CHAT_INFO);
 
 	const [containers, setContainers] = useState<HTMLElement[]>([]);
