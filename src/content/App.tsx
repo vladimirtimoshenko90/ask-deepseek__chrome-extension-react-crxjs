@@ -79,7 +79,7 @@ function App() {
 
 	return (
 		<>
-			<PinnedSidebar pins={chatInfo.pins} />
+			<PinnedSidebar pins={chatInfo.pins} onUnpin={handleUnpin} />
 
 			{containers.map((container, idx) =>
 				createPortal(

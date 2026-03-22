@@ -1,28 +1,46 @@
 import { useEffect, useRef } from 'react';
+import { IconPinnedOff } from '@tabler/icons-react';
 import { type PinnedMessage } from '@/infrastructure/storage';
 import styles from './PinnedSidebar.module.scss';
 
-function PinnedSidebarItem({ pin }: { pin: PinnedMessage }) {
+function PinnedSidebarItem({
+	pin,
+	onUnpin,
+}: {
+	pin: PinnedMessage;
+	onUnpin: (hash: string) => void;
+}) {
 	const ref = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		if (ref.current) ref.current.innerHTML = pin.html;
 	}, [pin.html]);
 
-	return <div ref={ref} className={styles['ads-pinned-sidebar__item']} />;
+	return (
+		<div className={styles['ads-pinned-sidebar__item-wrapper']}>
+			<button
+				className={styles['ads-pinned-sidebar__unpin-btn']}
+				onClick={() => onUnpin(pin.hash)}
+			>
+				<IconPinnedOff size={22} />
+			</button>
+			<div ref={ref} className={styles['ads-pinned-sidebar__item']} />
+		</div>
+	);
 }
 
 interface Props {
 	pins: PinnedMessage[];
+	onUnpin: (hash: string) => void;
 }
 
-function PinnedSidebar({ pins }: Props) {
+function PinnedSidebar({ pins, onUnpin }: Props) {
 	if (pins.length === 0) return null;
 
 	return (
 		<div className={styles['ads-pinned-sidebar']}>
 			{pins.map((pin) => (
-				<PinnedSidebarItem key={pin.hash} pin={pin} />
+				<PinnedSidebarItem key={pin.hash} pin={pin} onUnpin={onUnpin} />
 			))}
 		</div>
 	);
