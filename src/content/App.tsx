@@ -4,7 +4,7 @@ import {
 } from '@/infrastructure/constants';
 import { useEffect, useMemo, useState } from 'react';
 
-import ChatMessage from './ChatMessage/ChatMessage';
+import ChatMessageToolbar from './ChatMessageToolbar/ChatMessageToolbar';
 import {
 	type ChatInfo,
 	type PinnedMessage,
@@ -75,7 +75,7 @@ function App() {
 
 	return containers.map((container, idx) =>
 		createPortal(
-			<ChatMessage
+			<ChatMessageToolbar
 				chatInfo={chatInfo}
 				onPin={handlePin}
 				onUnpin={handleUnpin}

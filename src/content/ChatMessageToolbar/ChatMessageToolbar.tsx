@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { type ChatInfo, type PinnedMessage } from '@/infrastructure/storage';
 import { hashText } from '@/infrastructure/utility/hash.utils';
 import { sanitizeChatMessageHtml } from '@/infrastructure/utility/sanitize.utils';
-import styles from './ChatMessage.module.scss';
+import styles from './ChatMessageToolbar.module.scss';
 
 interface Props {
 	chatInfo: ChatInfo;
@@ -12,7 +12,7 @@ interface Props {
 	onUnpin: (hash: string) => void;
 }
 
-function ChatMessage({ chatInfo, onPin, onUnpin }: Props) {
+function ChatMessageToolbar({ chatInfo, onPin, onUnpin }: Props) {
 	const el_root = useRef<HTMLDivElement>(null);
 	const el_msg = useRef<HTMLElement>(null!);
 
@@ -47,4 +47,4 @@ function ChatMessage({ chatInfo, onPin, onUnpin }: Props) {
 	);
 }
 
-export default ChatMessage;
+export default ChatMessageToolbar;
