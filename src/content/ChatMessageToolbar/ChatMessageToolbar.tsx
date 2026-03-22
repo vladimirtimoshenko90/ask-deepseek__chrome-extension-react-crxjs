@@ -28,6 +28,12 @@ function ChatMessageToolbar({ chatInfo, onPin, onUnpin }: Props) {
 
 	const isPinned = chatInfo.pins.some((p) => p.hash === hash);
 
+	useEffect(() => {
+		const el_styling_target = el_msg.current.firstElementChild;
+		if (!el_styling_target) return;
+		el_styling_target.classList.toggle('ads-pinned-message', isPinned);
+	}, [isPinned]);
+
 	return (
 		<div ref={el_root} className={styles['ads-chat-message-toolbar']}>
 			<button>

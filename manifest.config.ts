@@ -21,6 +21,7 @@ export default defineManifest({
 	content_scripts: [
 		{
 			js: ['src/content/main-deepseek.tsx'],
+			css: ['src/content/main-deepseek.css'],
 			matches: ['https://chat.deepseek.com/*'],
 		},
 	],
