@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import { Switch } from '@mantine/core';
 import { storage } from '@/infrastructure/storage';
@@ -31,4 +31,4 @@ function FullscreenToggle() {
 	);
 }
 
-export default FullscreenToggle;
+export default memo(FullscreenToggle);

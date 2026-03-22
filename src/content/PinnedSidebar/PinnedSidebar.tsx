@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { type PinnedMessage } from '@/infrastructure/storage';
 import styles from './PinnedSidebar.module.scss';
 import PinnedSidebarItem from './PinnedSidebarItem';
@@ -19,4 +20,4 @@ function PinnedSidebar({ pins, onUnpin }: Props) {
 	);
 }
 
-export default PinnedSidebar;
+export default memo(PinnedSidebar);

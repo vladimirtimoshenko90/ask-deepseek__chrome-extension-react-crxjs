@@ -2,7 +2,7 @@ import {
 	CHAT_MESSAGE_INJECTION_SELECTOR,
 	markChatMessageInjectionRoot,
 } from '@/infrastructure/constants';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import ChatMessageToolbar from './ChatMessageToolbar/ChatMessageToolbar';
 import {
@@ -30,18 +30,24 @@ function App() {
 			.then((info) => setChatInfo(info || EMPTY_CHAT_INFO));
 	}, [chatPath]);
 
-	const handlePin = async (pin: PinnedMessage) => {
-		await storage.addPin(chatPath, pin);
-		setChatInfo((prev) => ({ ...prev, pins: [...prev.pins, pin] }));
-	};
+	const handlePin = useCallback(
+		async (pin: PinnedMessage) => {
+			await storage.addPin(chatPath, pin);
+			setChatInfo((prev) => ({ ...prev, pins: [...prev.pins, pin] }));
+		},
+		[chatPath],
+	);
 
-	const handleUnpin = async (hash: string) => {
-		await storage.removePin(chatPath, hash);
-		setChatInfo((prev) => ({
-			...prev,
-			pins: prev.pins.filter((p) => p.hash !== hash),
-		}));
-	};
+	const handleUnpin = useCallback(
+		async (hash: string) => {
+			await storage.removePin(chatPath, hash);
+			setChatInfo((prev) => ({
+				...prev,
+				pins: prev.pins.filter((p) => p.hash !== hash),
+			}));
+		},
+		[chatPath],
+	);
 
 	useMutationObserver(document.body, () => {
 		const el_list = document.querySelector('div.ds-virtual-list-items');
