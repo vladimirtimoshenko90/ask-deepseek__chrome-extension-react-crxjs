@@ -4,7 +4,7 @@ import {
 	SIDEBAR_INJECTION_SELECTOR,
 	markSidebarInjectionRoot,
 } from '@/infrastructure/constants';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import ChatMessageToolbar from './ChatMessageToolbar/ChatMessageToolbar';
 import {
@@ -24,7 +24,6 @@ function App() {
 	const [chatInfo, setChatInfo] = useState<ChatInfo>(EMPTY_CHAT_INFO);
 
 	const [containers, setContainers] = useState<HTMLElement[]>([]);
-	const containersRef = useRef<HTMLElement[]>([]);
 
 	const [sidebarContainer, setSidebarContainer] =
 		useState<HTMLElement | null>(null);
@@ -80,7 +79,6 @@ function App() {
 		// Check if the chat page is fully rendered and the message list is present
 		const el_list = document.querySelector('div.ds-virtual-list-items');
 		if (!el_list) {
-			containersRef.current = [];
 			setContainers([]);
 			return;
 		}
@@ -104,12 +102,9 @@ function App() {
 		});
 
 		const unchanged =
-			containersRef.current.length === el_injectInto_list.length &&
-			el_injectInto_list.every(
-				(el, i) => el === containersRef.current[i],
-			);
+			containers.length === el_injectInto_list.length &&
+			el_injectInto_list.every((el, i) => el === containers[i]);
 		if (!unchanged) {
-			containersRef.current = el_injectInto_list;
 			setContainers(el_injectInto_list);
 		}
 
