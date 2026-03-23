@@ -1,7 +1,9 @@
 /* Pin feature — highlights the pinned message in the chat */
 .ads-pin-hl {
-	outline: 2px dashed green;
-	background-color: #f0fff0;
+	> :first-child {
+		outline: 2px dashed green;
+		background-color: #f0fff0;
+	}
 }
 
 /* Collapse feature — visually compresses a message: reduces height, fades content, adds a bottom fade-out mask */
@@ -27,8 +29,10 @@
 		margin: 2px 0 !important;
 	}
 
-	.ads-pin-hl {
-		outline: none;
+	&.ads-pin-hl {
+		> :first-child {
+			outline: none;
+		}
 	}
 }
 
