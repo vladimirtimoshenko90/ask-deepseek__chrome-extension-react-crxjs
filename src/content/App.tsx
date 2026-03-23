@@ -23,7 +23,7 @@ function App() {
 	const chatPath = usePathname();
 	const [chatInfo, setChatInfo] = useState<ChatInfo>(EMPTY_CHAT_INFO);
 
-	const [containers, setContainers] = useState<HTMLElement[]>([]);
+	const [msgContainers, setMsgContainers] = useState<HTMLElement[]>([]);
 
 	const [sidebarContainer, setSidebarContainer] =
 		useState<HTMLElement | null>(null);
@@ -79,7 +79,7 @@ function App() {
 		// Check if the chat page is fully rendered and the message list is present
 		const el_list = document.querySelector('div.ds-virtual-list-items');
 		if (!el_list) {
-			setContainers([]);
+			setMsgContainers([]);
 			return;
 		}
 
@@ -102,10 +102,10 @@ function App() {
 		});
 
 		const unchanged =
-			containers.length === el_injectInto_list.length &&
-			el_injectInto_list.every((el, i) => el === containers[i]);
+			msgContainers.length === el_injectInto_list.length &&
+			el_injectInto_list.every((el, i) => el === msgContainers[i]);
 		if (!unchanged) {
-			setContainers(el_injectInto_list);
+			setMsgContainers(el_injectInto_list);
 		}
 
 		// Resolve injection point for the pinned sidebar
@@ -142,7 +142,7 @@ function App() {
 					sidebarContainer,
 				)}
 
-			{containers.map((container, idx) =>
+			{msgContainers.map((container, idx) =>
 				createPortal(
 					<ChatMessageToolbar
 						chatInfo={chatInfo}
