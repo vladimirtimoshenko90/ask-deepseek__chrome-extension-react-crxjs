@@ -1,5 +1,5 @@
 import { DEEPSEEK_URL_BASE } from '@/infrastructure/constants';
-import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/messages';
+import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/sw-messages';
 
 const CONTEXT_MENU_ASK_DEEPSEEK = 'ask-deepseek';
 

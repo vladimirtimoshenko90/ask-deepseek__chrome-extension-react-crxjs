@@ -1,11 +1,11 @@
 import '@mantine/core/styles.css';
 
 import App from './App';
-import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/messages.ts';
+import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/sw-messages.ts';
 import { MantineProvider } from '@mantine/core';
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { prompt_ask_deepseek } from '@/infrastructure/prompts.ts';
+import { prompt_ask_deepseek } from '@/infrastructure/ai-prompts.ts';
 
 // --- Background message listener: receive text from background & submit AI query ---
 
