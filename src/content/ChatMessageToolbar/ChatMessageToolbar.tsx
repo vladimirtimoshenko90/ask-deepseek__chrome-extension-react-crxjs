@@ -31,13 +31,11 @@ function ChatMessageToolbar({
 	const el_msg = useRef<HTMLElement>(null!);
 
 	const [hash, setHash] = useState<string>('');
-	const [html, setHtml] = useState<string>('');
 
 	useEffect(() => {
 		el_msg.current =
 			el_root.current!.closest<HTMLElement>('div.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
-		setHtml(sanitizeChatMessageHtml(el_msg.current.innerHTML));
 	}, []);
 
 	const isCollapsed = chatInfo.collapsed?.some((h) => h === hash) || false;
@@ -45,6 +43,13 @@ function ChatMessageToolbar({
 
 	useClassToggle(el_msg.current, 'ads-pin-hl', isPinned);
 	useClassToggle(el_msg.current, 'ads-collapsed', isCollapsed);
+
+	function handlePin() {
+		onPin({
+			hash,
+			html: sanitizeChatMessageHtml(el_msg.current.innerHTML),
+		});
+	}
 
 	return (
 		<div ref={el_root} className={styles['ads-chat-message-toolbar']}>
@@ -63,7 +68,7 @@ function ChatMessageToolbar({
 					<IconPinFilled size={20} />
 				</button>
 			) : (
-				<button onClick={() => onPin({ hash, html })}>
+				<button onClick={handlePin}>
 					<IconPin size={20} />
 				</button>
 			)}
