@@ -39,9 +39,15 @@
 
 /* Full screen mode feature — smoothly expands the chat area to full viewport width when the toggle is on */
 .ds-virtual-list--printable .ds-virtual-list-items {
-	transition: padding 1s ease;
+	transition: padding 0.5s ease;
 }
 
 .ads-fullscreen-mode .ds-virtual-list--printable .ds-virtual-list-items {
 	padding: 0 10px !important;
+	margin-left: 0 !important;
+	margin-right: 0 !important;
+}
+
+.ads-fullscreen-mode .ds-virtual-list--printable + * {
+	display: none;
 }
