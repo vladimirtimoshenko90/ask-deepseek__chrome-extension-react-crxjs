@@ -9,10 +9,10 @@ interface Props {
 }
 
 function PinnedSidebar({ pins, onUnpin }: Props) {
-	if (pins.length === 0) return null;
-
 	return (
-		<div className={styles['ads-pinned-sidebar']}>
+		<div
+			className={`${styles['ads-pinned-sidebar']}${pins.length > 0 ? ` ${styles['ads-pinned-sidebar--visible']}` : ''}`}
+		>
 			{pins.map((pin) => (
 				<PinnedSidebarItem key={pin.hash} pin={pin} onUnpin={onUnpin} />
 			))}

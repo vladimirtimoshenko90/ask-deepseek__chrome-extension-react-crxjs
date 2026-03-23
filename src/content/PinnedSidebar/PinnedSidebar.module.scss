@@ -1,18 +1,22 @@
 .ads-pinned-sidebar {
+	transition: width 0.4s ease-out;
 	position: relative;
-	width: 440px;
+	width: 0;
 	height: 100%;
 	background: #fff;
 	border-left: 1px solid #d0d0d0;
 	box-shadow: -2px 0 8px rgba(0, 0, 0, 0.08);
-	overflow-y: scroll;
+	overflow-y: auto;
 	overflow-x: hidden;
-	padding: 8px;
 	box-sizing: border-box;
 	display: flex;
 	flex-direction: column;
 	gap: 6px;
 	color: #000;
+
+	&.ads-pinned-sidebar--visible {
+		width: 440px;
+	}
 
 	// Custom scrollbar
 	scrollbar-width: thin;
