@@ -1,6 +1,8 @@
 import {
 	CHAT_MESSAGE_INJECTION_SELECTOR,
 	markChatMessageInjectionRoot,
+	SIDEBAR_INJECTION_SELECTOR,
+	markSidebarInjectionRoot,
 } from '@/infrastructure/constants';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
@@ -23,6 +25,9 @@ function App() {
 
 	const [containers, setContainers] = useState<HTMLElement[]>([]);
 	const containersRef = useRef<HTMLElement[]>([]);
+
+	const [sidebarContainer, setSidebarContainer] =
+		useState<HTMLElement | null>(null);
 
 	useEffect(() => {
 		storage
@@ -72,6 +77,7 @@ function App() {
 	);
 
 	useMutationObserver(document.body, () => {
+		// Check if the chat page is fully rendered and the message list is present
 		const el_list = document.querySelector('div.ds-virtual-list-items');
 		if (!el_list) {
 			containersRef.current = [];
@@ -79,6 +85,7 @@ function App() {
 			return;
 		}
 
+		// Resolve injection points for each chat message toolbar
 		const el_message_list =
 			el_list.querySelectorAll<HTMLElement>('div.ds-message');
 
@@ -105,13 +112,40 @@ function App() {
 			containersRef.current = el_injectInto_list;
 			setContainers(el_injectInto_list);
 		}
+
+		// Resolve injection point for the pinned sidebar
+		const el_container: HTMLElement | null =
+			document.querySelectorAll<HTMLElement>('.ds-scroll-area')[2]
+				?.parentElement?.parentElement ?? null;
+		if (el_container) {
+			let el_injectInto = el_container.querySelector<HTMLElement>(
+				SIDEBAR_INJECTION_SELECTOR,
+			);
+
+			if (!el_injectInto) {
+				el_injectInto = document.createElement('div');
+				markSidebarInjectionRoot(el_injectInto);
+				el_container.appendChild(el_injectInto);
+			}
+
+			setSidebarContainer(el_injectInto);
+		} else {
+			setSidebarContainer(null);
+		}
 	});
 
 	return (
 		<>
 			<FullscreenToggle />
 
-			<PinnedSidebar pins={chatInfo.pins} onUnpin={handleUnpin} />
+			{sidebarContainer &&
+				createPortal(
+					<PinnedSidebar
+						pins={chatInfo.pins}
+						onUnpin={handleUnpin}
+					/>,
+					sidebarContainer,
+				)}
 
 			{containers.map((container, idx) =>
 				createPortal(
