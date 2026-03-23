@@ -14,9 +14,10 @@
 	mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
 	-webkit-mask-image: linear-gradient(to bottom, black 40%, transparent 100%);
 
-	* {
-		font-size: 0.7rem;
-		line-height: 1rem;
+	&,
+	& * {
+		font-size: 0.7rem !important;
+		line-height: 1rem !important;
 	}
 
 	p,
