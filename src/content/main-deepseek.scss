@@ -41,9 +41,17 @@
 	}
 }
 
-.ads-collapsed + *,
-.ads-collapsed + .ds-theme + .ds-flex {
+.ads-collapsed + * {
 	display: none !important;
+}
+
+.ads-collapsed.ads-agent-message {
+	& > * {
+		display: none;
+	}
+	& > .ds-assistant-message-main-content {
+		display: block;
+	}
 }
 
 /* Full screen mode feature — smoothly expands the chat area to full viewport width when the toggle is on */
