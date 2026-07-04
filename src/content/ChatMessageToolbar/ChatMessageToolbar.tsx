@@ -39,7 +39,11 @@ function ChatMessageToolbar({
 			el_root.current!.closest<HTMLElement>('div.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
 
-		setIsAgentMessage(!!el_msg.current.querySelector('.ds-markdown'));
+		setIsAgentMessage(
+			!!el_msg.current.querySelector(
+				'.ds-assistant-message-main-content',
+			),
+		);
 	}, []);
 
 	const isCollapsed = chatInfo.collapsed?.some((h) => h === hash) || false;
