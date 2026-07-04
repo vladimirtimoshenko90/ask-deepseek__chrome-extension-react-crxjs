@@ -32,10 +32,14 @@ function ChatMessageToolbar({
 
 	const [hash, setHash] = useState<string>('');
 
+	const [isAgentMessage, setIsAgentMessage] = useState(false);
+
 	useEffect(() => {
 		el_msg.current =
 			el_root.current!.closest<HTMLElement>('div.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
+
+		setIsAgentMessage(!!el_msg.current.querySelector('.ds-markdown'));
 	}, []);
 
 	const isCollapsed = chatInfo.collapsed?.some((h) => h === hash) || false;
