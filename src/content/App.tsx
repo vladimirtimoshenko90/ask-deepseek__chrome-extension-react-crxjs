@@ -31,7 +31,11 @@ function App() {
 	useEffect(() => {
 		storage
 			.getChatInfo(chatPath)
-			.then((info) => setChatInfo(info || EMPTY_CHAT_INFO));
+			.then((info) =>
+				setChatInfo(
+					!!info ? { ...EMPTY_CHAT_INFO, ...info } : EMPTY_CHAT_INFO,
+				),
+			);
 	}, [chatPath]);
 
 	const handlePin = useCallback(
