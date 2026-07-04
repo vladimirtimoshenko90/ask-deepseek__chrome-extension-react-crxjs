@@ -47,6 +47,8 @@ function ChatMessageToolbar({
 
 	useClassToggle(el_msg.current, 'ads-pin-hl', isPinned);
 	useClassToggle(el_msg.current, 'ads-collapsed', isCollapsed);
+	useClassToggle(el_msg.current, 'ads-agent-message', isAgentMessage);
+	useClassToggle(el_msg.current, 'ads-user-message', !isAgentMessage);
 
 	function handlePin() {
 		onPin({
