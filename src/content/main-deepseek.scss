@@ -1,3 +1,8 @@
+/* Delete feature — hides the message from the chat */
+[data-virtual-list-item-key].ads-deleted {
+	display: none !important;
+}
+
 /* Pin feature — highlights the pinned message in the chat */
 .ads-pin-hl.ads-agent-message {
 	outline: 2px dashed green;

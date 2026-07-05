@@ -6,6 +6,11 @@ export interface PinnedMessage {
 export interface ChatInfo {
 	pins: PinnedMessage[];
 	collapsed: string[];
+	deleted: string[];
 }
 
-export const EMPTY_CHAT_INFO: ChatInfo = { pins: [], collapsed: [] };
+export const EMPTY_CHAT_INFO: ChatInfo = {
+	pins: [],
+	collapsed: [],
+	deleted: [],
+};

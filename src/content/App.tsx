@@ -72,6 +72,17 @@ function App() {
 		[chatPath],
 	);
 
+	const handleDelete = useCallback(
+		async (hash: string) => {
+			await storage.delete(chatPath, hash);
+			setChatInfo((prev) => ({
+				...prev,
+				deleted: [...prev.deleted, hash],
+			}));
+		},
+		[chatPath],
+	);
+
 	useMutationObserver(document.body, () => {
 		// Check if the chat page is fully rendered and the message list is present
 		const el_list = document.querySelector('div.ds-virtual-list-items');
@@ -146,6 +157,7 @@ function App() {
 						onUnpin={handleUnpin}
 						onCollapse={handleCollapse}
 						onUncollapse={handleUncollapse}
+						onDelete={handleDelete}
 					/>,
 					container,
 					idx,

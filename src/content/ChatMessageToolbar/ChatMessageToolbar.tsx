@@ -1,4 +1,4 @@
-import { IconMaximize, IconMinimize, IconPin, IconPinFilled } from '@tabler/icons-react';
+import { IconMaximize, IconMinimize, IconPin, IconPinFilled, IconTrash } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { type ChatInfo, type PinnedMessage } from '@/infrastructure/storage';
@@ -13,29 +13,39 @@ interface Props {
 	onUnpin: (hash: string) => void;
 	onCollapse: (hash: string) => void;
 	onUncollapse: (hash: string) => void;
+	onDelete: (hash: string) => void;
 }
 
-function ChatMessageToolbar({ chatInfo, onPin, onUnpin, onCollapse, onUncollapse }: Props) {
-	const el_root = useRef<HTMLDivElement>(null);
+function ChatMessageToolbar({
+	chatInfo,
+	onPin,
+	onUnpin,
+	onCollapse,
+	onUncollapse,
+	onDelete,
+}: Props) {
+	const el_toolbar = useRef<HTMLDivElement>(null);
+	const el_root = useRef<HTMLElement>(null!);
 	const el_msg = useRef<HTMLElement>(null!);
 
 	const [hash, setHash] = useState<string>('');
 
 	const isCollapsed = chatInfo.collapsed?.some((h) => h === hash) || false;
 	const isPinned = chatInfo.pins?.some((p) => p.hash === hash) || false;
+	const isDeleted = chatInfo.deleted?.some((h) => h === hash) || false;
 	const [isAgentMessage, setIsAgentMessage] = useState(false);
 
 	useEffect(() => {
-		el_msg.current = el_root
-			.current!.closest<HTMLElement>('[data-virtual-list-item-key]')!
-			.querySelector<HTMLElement>('.ds-message')!;
+		el_root.current = el_toolbar.current!.closest<HTMLElement>('[data-virtual-list-item-key]')!;
+		el_msg.current = el_root.current.querySelector<HTMLElement>('.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
 
 		setIsAgentMessage(!!el_msg.current.querySelector('.ds-assistant-message-main-content'));
 	}, []);
 
-	useClassToggle(el_msg.current, 'ads-pin-hl', isPinned);
 	useClassToggle(el_msg.current, 'ads-collapsed', isCollapsed);
+	useClassToggle(el_msg.current, 'ads-pin-hl', isPinned);
+	useClassToggle(el_root.current, 'ads-deleted', isDeleted);
 	useClassToggle(el_msg.current, 'ads-agent-message', isAgentMessage);
 	useClassToggle(el_msg.current, 'ads-user-message', !isAgentMessage);
 
@@ -47,13 +57,17 @@ function ChatMessageToolbar({ chatInfo, onPin, onUnpin, onCollapse, onUncollapse
 	}
 
 	return (
-		<div ref={el_root} className={styles['ads-chat-message-toolbar']}>
+		<div ref={el_toolbar} className={styles['ads-chat-message-toolbar']}>
 			<button onClick={() => (isCollapsed ? onUncollapse(hash) : onCollapse(hash))}>
 				{isCollapsed ? <IconMaximize size={20} /> : <IconMinimize size={20} />}
 			</button>
 
 			<button onClick={() => (isPinned ? onUnpin(hash) : handlePin())}>
 				{isPinned ? <IconPinFilled size={20} /> : <IconPin size={20} />}
+			</button>
+
+			<button onClick={() => onDelete(hash)}>
+				<IconTrash size={20} />
 			</button>
 		</div>
 	);

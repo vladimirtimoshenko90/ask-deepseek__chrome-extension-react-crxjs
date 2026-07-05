@@ -52,6 +52,14 @@ class Storage {
 		});
 	}
 
+	async delete(chatPath: string, hash: string): Promise<void> {
+		const info = await this.getChatInfo(chatPath);
+		await db.write(CHAT_INFO_KEY(chatPath), {
+			...info,
+			deleted: [...(info?.deleted || []), hash],
+		});
+	}
+
 	// --- ScreenSettings ---
 
 	async getWideMode(): Promise<boolean> {
