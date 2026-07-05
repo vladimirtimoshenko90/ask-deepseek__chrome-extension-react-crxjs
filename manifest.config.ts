@@ -16,7 +16,7 @@ export default defineManifest({
 	omnibox: {
 		keyword: 'ds',
 	},
-	permissions: ['storage', 'unlimitedStorage', 'contextMenus'],
+	permissions: ['storage', 'unlimitedStorage', 'contextMenus', 'tabs'],
 	background: {
 		service_worker: 'src/background/sw.ts',
 		type: 'module',
