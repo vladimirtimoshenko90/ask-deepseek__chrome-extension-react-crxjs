@@ -35,8 +35,9 @@ function ChatMessageToolbar({
 	const [isAgentMessage, setIsAgentMessage] = useState(false);
 
 	useEffect(() => {
-		el_msg.current =
-			el_root.current!.closest<HTMLElement>('div.ds-message')!;
+		el_msg.current = el_root
+			.current!.closest<HTMLElement>('[data-virtual-list-item-key]')!
+			.querySelector<HTMLElement>('.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
 
 		setIsAgentMessage(

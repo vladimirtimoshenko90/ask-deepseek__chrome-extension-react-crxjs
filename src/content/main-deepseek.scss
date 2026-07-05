@@ -1,20 +1,3 @@
-.ads-agent-message {
-}
-
-.ads-user-message {
-}
-
-.ds-message {
-	position: relative;
-
-	[data-chat-message] {
-		position: absolute;
-		top: 0;
-		right: 0;
-		z-index: 9999;
-	}
-}
-
 /* Pin feature — highlights the pinned message in the chat */
 .ads-pin-hl.ads-agent-message {
 	outline: 2px dashed green;
@@ -53,19 +36,12 @@
 	}
 }
 
-.ads-collapsed + * {
-	display: none !important;
-}
-
 .ads-collapsed.ads-agent-message {
 	outline: none;
 	& > * {
 		display: none;
 	}
 	& > .ds-assistant-message-main-content {
-		display: block;
-	}
-	& > [data-chat-message] {
 		display: block;
 	}
 }

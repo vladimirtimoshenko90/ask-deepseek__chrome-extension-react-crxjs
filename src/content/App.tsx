@@ -88,18 +88,22 @@ function App() {
 		}
 
 		// Resolve injection points for each chat message toolbar
-		const el_message_list =
-			el_list.querySelectorAll<HTMLElement>('div.ds-message');
+		const el_message_list = el_list.querySelectorAll<HTMLElement>(
+			'[data-virtual-list-item-key]',
+		);
 
 		const el_injectInto_list = Array.from(el_message_list).map((el_msg) => {
-			let el_injectInto = el_msg.querySelector<HTMLElement>(
+			const el_flex_list = el_msg.querySelectorAll('.ds-flex');
+			const el_toolbar = el_flex_list[el_flex_list.length - 1];
+
+			let el_injectInto = el_toolbar.querySelector<HTMLElement>(
 				CHAT_MESSAGE_INJECTION_SELECTOR,
 			);
 
 			if (!el_injectInto) {
 				el_injectInto = document.createElement('div');
 				markChatMessageInjectionRoot(el_injectInto);
-				el_msg.append(el_injectInto);
+				el_toolbar.append(el_injectInto);
 			}
 
 			return el_injectInto;
