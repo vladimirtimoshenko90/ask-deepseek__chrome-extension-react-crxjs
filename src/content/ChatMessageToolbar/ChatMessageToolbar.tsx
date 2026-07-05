@@ -57,6 +57,12 @@ function ChatMessageToolbar({
 		});
 	}
 
+	function handleDelete() {
+		const question =
+			'Delete this message? It will be removed from the chat and cannot be restored.';
+		window.confirm(question) && onDelete(hash);
+	}
+
 	return (
 		<div ref={el_toolbar} className={styles['ads-chat-message-toolbar']}>
 			<button onClick={() => (isCollapsed ? onUncollapse(hash) : onCollapse(hash))}>
@@ -67,7 +73,7 @@ function ChatMessageToolbar({
 				{isPinned ? <IconPinFilled size={20} /> : <IconPin size={20} />}
 			</button>
 
-			<button onClick={() => onDelete(hash)}>
+			<button onClick={handleDelete}>
 				<IconTrash size={20} />
 			</button>
 		</div>
