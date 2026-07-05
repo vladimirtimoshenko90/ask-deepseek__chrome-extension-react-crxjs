@@ -13,6 +13,9 @@ export default defineManifest({
 			48: 'public/logo.png',
 		},
 	},
+	omnibox: {
+		keyword: 'ds',
+	},
 	permissions: ['storage', 'unlimitedStorage', 'contextMenus'],
 	background: {
 		service_worker: 'src/background/sw.ts',
