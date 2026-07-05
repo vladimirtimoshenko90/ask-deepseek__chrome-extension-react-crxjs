@@ -25,17 +25,10 @@ function App() {
 
 	const [msgContainers, setMsgContainers] = useState<HTMLElement[]>([]);
 
-	const [sidebarContainer, setSidebarContainer] =
-		useState<HTMLElement | null>(null);
+	const [sidebarContainer, setSidebarContainer] = useState<HTMLElement | null>(null);
 
 	useEffect(() => {
-		storage
-			.getChatInfo(chatPath)
-			.then((info) =>
-				setChatInfo(
-					!!info ? { ...EMPTY_CHAT_INFO, ...info } : EMPTY_CHAT_INFO,
-				),
-			);
+		storage.getChatInfo(chatPath).then((info) => setChatInfo(info || EMPTY_CHAT_INFO));
 	}, [chatPath]);
 
 	const handlePin = useCallback(
@@ -118,12 +111,10 @@ function App() {
 
 		// Resolve injection point for the pinned sidebar
 		const el_container: HTMLElement | null =
-			document.querySelectorAll<HTMLElement>('.ds-scroll-area')[2]
-				?.parentElement?.parentElement ?? null;
+			document.querySelectorAll<HTMLElement>('.ds-scroll-area')[2]?.parentElement
+				?.parentElement ?? null;
 		if (el_container) {
-			let el_injectInto = el_container.querySelector<HTMLElement>(
-				SIDEBAR_INJECTION_SELECTOR,
-			);
+			let el_injectInto = el_container.querySelector<HTMLElement>(SIDEBAR_INJECTION_SELECTOR);
 
 			if (!el_injectInto) {
 				el_injectInto = document.createElement('div');
@@ -143,10 +134,7 @@ function App() {
 
 			{sidebarContainer &&
 				createPortal(
-					<PinnedSidebar
-						pins={chatInfo.pins}
-						onUnpin={handleUnpin}
-					/>,
+					<PinnedSidebar pins={chatInfo.pins} onUnpin={handleUnpin} />,
 					sidebarContainer,
 				)}
 

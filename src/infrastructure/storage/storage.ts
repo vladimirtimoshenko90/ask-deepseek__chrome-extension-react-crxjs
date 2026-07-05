@@ -1,4 +1,4 @@
-import type { ChatInfo, PinnedMessage } from './entities/chat-info';
+import { EMPTY_CHAT_INFO, type ChatInfo, type PinnedMessage } from './entities/chat-info';
 
 import type { ScreenSettings } from './entities/screen-settings';
 import { db } from './db';
@@ -10,7 +10,8 @@ class Storage {
 	// --- ChatInfo ---
 
 	async getChatInfo(chatPath: string): Promise<ChatInfo | undefined> {
-		return db.read<ChatInfo>(CHAT_INFO_KEY(chatPath));
+		const info = await db.read<ChatInfo>(CHAT_INFO_KEY(chatPath));
+		return !!info ? { ...EMPTY_CHAT_INFO, ...info } : info;
 	}
 
 	async removeChatInfo(chatPath: string): Promise<void> {
