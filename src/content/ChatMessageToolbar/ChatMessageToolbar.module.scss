@@ -1,38 +1,31 @@
 .ads-chat-message-toolbar {
-	display: flex;
-	border: 1.5px solid #d1d5db;
-	border-radius: 4px;
-	overflow: hidden;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	margin: 0 6px;
+	padding-left: 6px;
+	border-left: 1px solid #ececec;
 
 	button {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		width: 36px;
-		height: 34px;
+		width: 28px;
+		height: 28px;
 		padding: 0;
 		border: none;
-		border-left: 1.5px solid #d1d5db;
-		border-radius: 0;
-		background: #fff;
-		color: #6b7280;
+		border-radius: 6px;
+		background: transparent;
+		color: #7b8494;
 		cursor: pointer;
-		transition:
-			background 0.1s,
-			color 0.1s;
-
-		&:first-child {
-			border-left: none;
-		}
 
 		&:hover {
-			background: #f5f3ff;
-			color: #4f46e5;
+			background: rgba(0, 0, 0, 0.05);
+			color: #4b5563;
 		}
 
 		&:active {
-			background: #ede9fe;
+			background: rgba(0, 0, 0, 0.08);
 		}
 	}
 }
