@@ -1,9 +1,4 @@
-import {
-	IconMaximize,
-	IconMinimize,
-	IconPin,
-	IconPinFilled,
-} from '@tabler/icons-react';
+import { IconMaximize, IconMinimize, IconPin, IconPinFilled } from '@tabler/icons-react';
 import { useEffect, useRef, useState } from 'react';
 
 import { type ChatInfo, type PinnedMessage } from '@/infrastructure/storage';
@@ -20,18 +15,14 @@ interface Props {
 	onUncollapse: (hash: string) => void;
 }
 
-function ChatMessageToolbar({
-	chatInfo,
-	onPin,
-	onUnpin,
-	onCollapse,
-	onUncollapse,
-}: Props) {
+function ChatMessageToolbar({ chatInfo, onPin, onUnpin, onCollapse, onUncollapse }: Props) {
 	const el_root = useRef<HTMLDivElement>(null);
 	const el_msg = useRef<HTMLElement>(null!);
 
 	const [hash, setHash] = useState<string>('');
 
+	const isCollapsed = chatInfo.collapsed?.some((h) => h === hash) || false;
+	const isPinned = chatInfo.pins?.some((p) => p.hash === hash) || false;
 	const [isAgentMessage, setIsAgentMessage] = useState(false);
 
 	useEffect(() => {
@@ -40,15 +31,8 @@ function ChatMessageToolbar({
 			.querySelector<HTMLElement>('.ds-message')!;
 		hashText(el_msg.current.innerText).then(setHash);
 
-		setIsAgentMessage(
-			!!el_msg.current.querySelector(
-				'.ds-assistant-message-main-content',
-			),
-		);
+		setIsAgentMessage(!!el_msg.current.querySelector('.ds-assistant-message-main-content'));
 	}, []);
-
-	const isCollapsed = chatInfo.collapsed?.some((h) => h === hash) || false;
-	const isPinned = chatInfo.pins?.some((p) => p.hash === hash) || false;
 
 	useClassToggle(el_msg.current, 'ads-pin-hl', isPinned);
 	useClassToggle(el_msg.current, 'ads-collapsed', isCollapsed);
@@ -64,25 +48,13 @@ function ChatMessageToolbar({
 
 	return (
 		<div ref={el_root} className={styles['ads-chat-message-toolbar']}>
-			{isCollapsed ? (
-				<button onClick={() => onUncollapse(hash)}>
-					<IconMaximize size={20} />
-				</button>
-			) : (
-				<button onClick={() => onCollapse(hash)}>
-					<IconMinimize size={20} />
-				</button>
-			)}
+			<button onClick={() => (isCollapsed ? onUncollapse(hash) : onCollapse(hash))}>
+				{isCollapsed ? <IconMaximize size={20} /> : <IconMinimize size={20} />}
+			</button>
 
-			{isPinned ? (
-				<button onClick={() => onUnpin(hash)}>
-					<IconPinFilled size={20} />
-				</button>
-			) : (
-				<button onClick={handlePin}>
-					<IconPin size={20} />
-				</button>
-			)}
+			<button onClick={() => (isPinned ? onUnpin(hash) : handlePin())}>
+				{isPinned ? <IconPinFilled size={20} /> : <IconPin size={20} />}
+			</button>
 		</div>
 	);
 }
