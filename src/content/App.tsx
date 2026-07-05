@@ -15,6 +15,7 @@ import {
 } from '@/infrastructure/storage';
 import { createPortal } from 'react-dom';
 import PinnedSidebar from './PinnedSidebar/PinnedSidebar';
+import SelectionPinFloating from './SelectionPinFloating/SelectionPinFloating';
 import { useMutationObserver } from '@/infrastructure/hooks/useMutationObserver';
 import { usePathname } from '@/infrastructure/hooks/usePathname';
 import FullscreenToggle from './FullscreenToggle/FullscreenToggle';
@@ -142,6 +143,8 @@ function App() {
 	return (
 		<>
 			<FullscreenToggle />
+
+			<SelectionPinFloating onPin={handlePin} />
 
 			{sidebarContainer &&
 				createPortal(
