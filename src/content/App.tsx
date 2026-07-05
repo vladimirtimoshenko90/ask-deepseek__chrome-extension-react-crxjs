@@ -99,7 +99,7 @@ function App() {
 			if (!el_injectInto) {
 				el_injectInto = document.createElement('div');
 				markChatMessageInjectionRoot(el_injectInto);
-				el_msg.firstElementChild!.prepend(el_injectInto);
+				el_msg.prepend(el_injectInto);
 			}
 
 			return el_injectInto;

@@ -4,6 +4,17 @@
 .ads-user-message {
 }
 
+.ds-message {
+	position: relative;
+
+	[data-chat-message] {
+		position: absolute;
+		top: 0;
+		right: 0;
+		z-index: 9999;
+	}
+}
+
 /* Pin feature — highlights the pinned message in the chat */
 .ads-pin-hl {
 	outline: 2px dashed green;
@@ -44,6 +55,9 @@
 		display: none;
 	}
 	& > .ds-assistant-message-main-content {
+		display: block;
+	}
+	& > [data-chat-message] {
 		display: block;
 	}
 }
