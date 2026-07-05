@@ -38,7 +38,8 @@ function ChatMessageToolbar({
 	useEffect(() => {
 		el_root.current = el_toolbar.current!.closest<HTMLElement>('[data-virtual-list-item-key]')!;
 		el_msg.current = el_root.current.querySelector<HTMLElement>('.ds-message')!;
-		hashText(el_msg.current.innerText).then(setHash);
+
+		hashText(el_msg.current.innerText.replace(/\s/g, '')).then(setHash);
 
 		setIsAgentMessage(!!el_msg.current.querySelector('.ds-assistant-message-main-content'));
 	}, []);
