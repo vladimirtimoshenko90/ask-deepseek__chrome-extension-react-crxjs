@@ -123,8 +123,8 @@ function App() {
 
 		// Resolve injection point for the pinned sidebar
 		const el_container: HTMLElement | null =
-			document.querySelectorAll<HTMLElement>('.ds-scroll-area')[2]?.parentElement
-				?.parentElement ?? null;
+			document.querySelector<HTMLElement>('.ds-message')?.closest('div.ds-virtual-list')
+				?.parentElement?.parentElement ?? null;
 		if (el_container) {
 			let el_injectInto = el_container.querySelector<HTMLElement>(SIDEBAR_INJECTION_SELECTOR);
 
