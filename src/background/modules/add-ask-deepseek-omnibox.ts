@@ -13,13 +13,18 @@ export function addAskDeepseekOmnibox(): void {
 			currentWindow: true,
 		});
 		if (!tab?.id) return;
-		const tabId = tab.id!;
 
+		let tabId;
 		const isDeepSeek = tab.url?.startsWith('https://chat.deepseek.com');
 		if (!isDeepSeek) {
+			tabId = tab.id;
 			await chrome.tabs.update(tabId, { url: DEEPSEEK_URL_BASE });
-			await waitForTabComplete(tabId);
+		} else {
+			const newTab = await chrome.tabs.create({ url: DEEPSEEK_URL_BASE });
+			tabId = newTab.id!;
 		}
+
+		await waitForTabComplete(tabId);
 
 		sendTabMessage(tabId, MSG_TYPE_ASK_DEEPSEEK, { text: trimmed });
 	});
