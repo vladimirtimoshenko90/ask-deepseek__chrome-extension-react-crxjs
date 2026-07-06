@@ -1,6 +1,8 @@
 import { DEEPSEEK_URL_BASE } from '@/infrastructure/constants';
 import { MSG_TYPE_ASK_DEEPSEEK } from '@/infrastructure/sw-messages';
 
+import { sendTabMessage, waitForTabComplete } from '../utility/tab.utils';
+
 const CONTEXT_MENU_ASK_DEEPSEEK = 'ask-deepseek';
 
 export function addAskDeepseekContextMenu(): void {
@@ -17,28 +19,8 @@ export function addAskDeepseekContextMenu(): void {
 
 		const tab = await chrome.tabs.create({ url: DEEPSEEK_URL_BASE });
 		const tabId = tab.id!;
+		await waitForTabComplete(tabId);
 
-		await new Promise<void>((resolve) => {
-			const onUpdated = (
-				updatedTabId: number,
-				changeInfo: { status?: string },
-			) => {
-				if (updatedTabId !== tabId || changeInfo.status !== 'complete')
-					return;
-				chrome.tabs.onUpdated.removeListener(onUpdated);
-				resolve();
-			};
-			chrome.tabs.onUpdated.addListener(onUpdated);
-		});
-
-		const msg = { type: MSG_TYPE_ASK_DEEPSEEK, text: info.selectionText! };
-		const send = (attempt = 0) => {
-			chrome.tabs.sendMessage(tabId, msg).catch(() => {
-				if (attempt < 10) {
-					setTimeout(() => send(attempt + 1), 300);
-				}
-			});
-		};
-		send();
+		sendTabMessage(tabId, MSG_TYPE_ASK_DEEPSEEK, { text: info.selectionText! });
 	});
 }
