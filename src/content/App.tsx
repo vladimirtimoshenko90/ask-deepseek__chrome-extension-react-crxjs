@@ -97,9 +97,11 @@ function App() {
 			'[data-virtual-list-item-key]',
 		);
 
-		const el_injectInto_list = Array.from(el_message_list).map((el_msg) => {
-			const el_flex_list = el_msg.querySelectorAll('.ds-flex');
-			const el_toolbar = el_flex_list[el_flex_list.length - 1];
+		const el_injectInto_list = Array.from(el_message_list).flatMap((el_msg) => {
+			const el_toolbar = el_msg
+				.querySelector<HTMLElement>('.ds-flex .ds-button')
+				?.closest<HTMLElement>('.ds-flex');
+			if (!el_toolbar) return [];
 
 			let el_injectInto = el_toolbar.querySelector<HTMLElement>(
 				CHAT_MESSAGE_INJECTION_SELECTOR,
@@ -111,7 +113,7 @@ function App() {
 				el_toolbar.append(el_injectInto);
 			}
 
-			return el_injectInto;
+			return [el_injectInto];
 		});
 
 		const unchanged =
